@@ -1,32 +1,32 @@
-import os
+import csv
 from PIL import Image
+from pathlib import Path
 from PIL.ExifTags import (
 	GPSTAGS,TAGS
 )
 
 class ExifTag:
-	def dec_degrees(self, degree, minutes, seconds, direction):
-		#Convert decimal degrees for longitude and latitude
-		decimal_degrees = degrees + (minutes / 60) + (seconds / 3600)
+	def __init__(self, image_path: Path):
+		if not path.image_path.is_file():
+			raise ValueError(f"Invalid file path: {image_path}")
+		self.image_path = image_path
+		
+	def dec_degrees(self, degree: float, minutes: float, seconds: float, direction: str) -> float:
+		decimal_degrees = degree + (minutes / 60) + (seconds / 3600)
 
-		#adjust the decimal degrees by multiplying it by -1 to represent the southern or western hemisphere.
 		if direction == "S" or direction == "W":
 			decimal_degrees *= -1
 		return decimal_degrees
 
-
-	def extract_data(self, image_path:str) -> dict:
-		if not os.path.exists(image_path):
-			return None
-
+	def extract_data(self) -> dict:
 		data = {}
 		gps_coords = {}
 
-		image = Image.open(image_path)
+		image = Image.open(self.image_path)
 		exif_data = image._getexif()
 
 		if not exif_data:
-			return None
+			return {}
 
 		for tag, value in exif_data.items():
 			tag_name = TAGS.get(tag)
@@ -40,19 +40,25 @@ class ExifTag:
 		return {**data, "gps_coords": gps_coords}
 
 
-	def remove_data(self, image_path: str) -> bool:
-		if not os.path.exists(image_path):
-			print(f"'{image_path}' does not exists!")
-			return False
+	def remove_data(self) -> tuple:
 		try:
-			image = Image.open(image_path)
+			image = Image.open(self.image_path)
 			data = list(image.getdata())
+			new_image_path = self.image_path.parent / "newphoto.jpg"
 			new_image = Image.new(image.mode, image.size)
 			new_image.putdata(data)
-			new_image.save('/Users/roshawnw/learnprogramming/makebot/Phototest/newphoto.jpg')
+			new_image.save(new_image_path)
 			new_image.close()
-			print("Successfully removed exif data!")
 			return True
 		except Exception as error:
-			print(error)
 			return False
+
+	def save(self, data):
+		csv_file = "exif_data.csv"
+		with open(csv_file, "w", newline="") as file:
+			csv_writer = csv.writer(file)
+			for item in data.items():
+				csv_writer.writerow(item)
+
+
+I can upload to GitHub just fine, but if I updated the code, I manually edit 

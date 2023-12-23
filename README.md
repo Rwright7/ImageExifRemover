@@ -13,14 +13,7 @@ The `ExifTag` class is designed to simplify the extraction and removal of EXIF d
 
 ## Installation
 
-1. Install the Pillow library:
+1. Open Command prompt in the project root
 
    ```bash
-   pip install pillow
-
-2. Install PySimpleGui
-   ```bash
-   pip install PySimpleGui
-
-
-
+   run python3 -m pip install requirements.txt

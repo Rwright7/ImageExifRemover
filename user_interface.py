@@ -17,8 +17,6 @@ layout = [
 # Create the window
 window = sg.Window('Exif Data Remover', layout, element_justification='center', font=("Times New Roman", 16), size=(1100, 900))
 
-# Create an instance of ExifTag
-#exif = ExifTag('')
 
 while True:
 	event, values = window.read()

@@ -59,6 +59,3 @@ class ExifTag:
 			csv_writer = csv.writer(file)
 			for item in data.items():
 				csv_writer.writerow(item)
-
-
-I can upload to GitHub just fine, but if I updated the code, I manually edit 

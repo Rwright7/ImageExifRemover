@@ -1,5 +1,6 @@
 import PySimpleGUI as sg
 from exif import ExifTag
+from pathlib import Path
 
 sg.theme('BluePurple')
 
@@ -24,7 +25,7 @@ while True:
 		break
 	elif event == 'Remove Data':
 		file_path = values['-FILE-']
-		exif = ExifTag(file_path) #instance of ExifTag
+		exif = ExifTag(Path(file_path))#instance of ExifTag
 		if file_path:
 			result = exif.remove_data()
 			if result is True:
@@ -34,7 +35,7 @@ while True:
 	elif event == 'Extract Data':
 		file_path = values['-FILE-']
 		if file_path:
-			exif = ExifTag(file_path) #instance of ExifTag
+			exif = ExifTag(Path(file_path)) #instance of ExifTag
 			data = exif.extract_data()
 			if data:
 				exif.save(data)

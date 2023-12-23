@@ -7,7 +7,7 @@ from PIL.ExifTags import (
 
 class ExifTag:
 	def __init__(self, image_path: Path):
-		if not path.image_path.is_file():
+		if not image_path.is_file():
 			raise ValueError(f"Invalid file path: {image_path}")
 		self.image_path = image_path
 		

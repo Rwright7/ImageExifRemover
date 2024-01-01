@@ -7,11 +7,16 @@ from PIL.ExifTags import (
 
 class ExifTag:
 	def __init__(self, image_path: Path):
-		if not image_path.is_file():
-			raise ValueError(f"Invalid file path: {image_path}")
-		self.image_path = image_path
-		
-	def dec_degrees(self, degree: float, minutes: float, seconds: float, direction: str) -> float:
+		try:
+			self.image_path = image_path
+			image = Image.open(image_path)
+		except FileNotFoundError:
+			raise ValueError(f"File not found: {image_path}")
+		except Exception as error:
+			raise ValueError(f"Error opening file: {error}")
+
+	@staticmethod
+	def dec_degrees(degree: float, minutes: float, seconds: float, direction: str) -> float:
 		decimal_degrees = degree + (minutes / 60) + (seconds / 3600)
 
 		if direction == "S" or direction == "W":
@@ -38,7 +43,6 @@ class ExifTag:
 			else:
 				data[tag_name] = value
 		return {**data, "gps_coords": gps_coords}
-
 
 	def remove_data(self) -> tuple:
 		try:
